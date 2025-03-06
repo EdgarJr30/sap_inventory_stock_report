@@ -5,7 +5,7 @@ from utils.log_config import setup_logger
 
 logger = setup_logger()
 
-def export_to_excel(data, file_name='query_results.xlsx', export_folder='exports'):
+def export_to_excel(data, base_file_name, export_folder='exports'):
     """
     Exporta los resultados del query a dos archivos Excel.
     
@@ -26,8 +26,8 @@ def export_to_excel(data, file_name='query_results.xlsx', export_folder='exports
 
         # Generar un nombre de archivo con timestamp para evitar duplicados
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        full_file_path = os.path.join(export_folder, f"{timestamp}_{file_name}")
-        filtered_file_path = os.path.join(export_folder, f"{timestamp}_filtered_{file_name}")
+        full_file_path = os.path.join(export_folder, f"{timestamp}_{base_file_name}")
+        filtered_file_path = os.path.join(export_folder, f"{timestamp}_filtered_{base_file_name}")
         
         # Definir los nombres de las columnas
         column_names = [
@@ -35,6 +35,11 @@ def export_to_excel(data, file_name='query_results.xlsx', export_folder='exports
             "Artículo hijo", "Descripción", "Cantidad Ordenada", "En stock",
             "Comprometido", "Pedido", "Disponible", "Almacén", "Error"
         ]
+        
+        # # Verificar que haya datos antes de crear el DataFrame
+        # if not data:
+        #     logger.warning(f"No hay datos para exportar en '{base_file_name}'. Se omite la exportacion.")
+        #     return None, None
 
         # Convertir los resultados a un DataFrame de pandas
         df = pd.DataFrame(data, columns=column_names)

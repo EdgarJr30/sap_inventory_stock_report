@@ -3,7 +3,7 @@ import json
 import sys
 from hdbcli import dbapi
 from dotenv import load_dotenv
-from queries.queries import GET_ARTICLES_NO_STOCK_PENDING_ORDERS
+from queries.queries import GET_ARTICLES_NO_STOCK_PENDING_ORDERS, CEODO_VW_DST_ArtSinInv_SalesKit
 from services.export_service import export_to_excel
 from services.email_service import send_email
 from services.file_cleanup_service import delete_file
@@ -12,6 +12,8 @@ from utils.log_config import setup_logger
 
 # Configurar el logger
 logger = setup_logger()
+logger.info("=========================================")
+logger.info("INCIO DEL SCRIPT")
 logger.info("=========================================")
 
 # Función para obtener variables de entorno con validación
@@ -92,17 +94,29 @@ try:
     logger.info(f"Conectado al esquema '{company_db}'.")
 
     # Ejecutar el query
-    logger.info("Ejecutando el query para obtener artículos sin stock y órdenes pendientes...")
+    logger.info("Ejecutando el query para obtener articulos sin stock y ordenes pendientes...")
     cursor.execute(GET_ARTICLES_NO_STOCK_PENDING_ORDERS)
     results = cursor.fetchall()
+    
+    logger.info("Ejecutando el query para obtener datos del SalesKit sin inventario...")
+    cursor.execute(CEODO_VW_DST_ArtSinInv_SalesKit)
+    saleskit_results = cursor.fetchall()
 
     # Mostrar los resultados
     for row in results:
         print(row)
+        logger.info(row)
+        
+    for row in saleskit_results:
+        print(row)
+        logger.info(row)
 
-    if results:
-        logger.info(f"Query ejecutado con éxito. Exportando {len(results)} registros a Excel.")
-        export_file_path, filtered_file_path = export_to_excel(results, file_name='articles_no_stock_pending_orders.xlsx')
+    if results or saleskit_results:
+        logger.info("Query's ejecutado con exito.")
+        logger.info(f"Exportando {len(results)} registros a Excel.")
+        logger.info(f"Exportando {len(saleskit_results)} registros a Excel.")
+        export_file_path_1, filtered_file_path_1 = export_to_excel(results, base_file_name='articles_no_stock_pending_orders.xlsx')
+        export_file_path_2, filtered_file_path_2 = export_to_excel(saleskit_results, base_file_name='saleskit_no_stock.xlsx')
 
         # Enviar el archivo por correo
         logger.info("Enviando los archivos por correo...")
@@ -110,7 +124,7 @@ try:
             subject="Reporte automatizado DST Artículos sin inventario y órdenes pendientes",
             body="Se adjunta el reporte automatizado de DST Artículos sin inventario y órdenes pendientes.",
             to_emails=email_recipients,
-            attachment_paths=[export_file_path, filtered_file_path],
+            attachment_paths=[export_file_path_1, filtered_file_path_1, export_file_path_2, filtered_file_path_2],
             from_email=email_from,
             smtp_server=smtp_server,
             smtp_port=smtp_port,
@@ -119,9 +133,11 @@ try:
 
         # Eliminar el archivo exportado
         logger.info("Eliminando los archivos exportados...")
-        delete_file(export_file_path)
-        delete_file(filtered_file_path)
-
+        delete_file(export_file_path_1)
+        delete_file(filtered_file_path_1)
+        delete_file(export_file_path_2)
+        delete_file(filtered_file_path_2)
+        
         # Limpiar todos los archivos del folder completo
         cleanup_exports_folder()
     else:
@@ -174,6 +190,10 @@ except dbapi.Error as e:
     logger.error(f"Error al conectar o ejecutar la consulta: {e}", exc_info=True)
 except Exception as e:
     logger.error(f"Ocurrió un error inesperado: {e}", exc_info=True)
+    
+logger.info("=========================================")
+logger.info("FIN DEL SCRIPT")
+logger.info("=========================================")
 
 # if __name__ == "__main__":
 #     try:
