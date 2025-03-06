@@ -1,0 +1,45 @@
+Generar el Ejecutable
+Puedes compilar un ejecutable .exe utilizando pyinstaller.
+Comando para crear el ejecutable:
+
+C:\Users\epere\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts\pyinstaller.exe --name "SAPInventoryStockReport" --onefile .\main.py
+
+
+Funcionalidades del Proyecto
+Conexión a SAP HANA
+
+Utiliza el hdbcli para conectarse a la base de datos.
+Establece el esquema de trabajo basado en la base de datos configurada.
+Consulta de Reportes
+
+Ejecuta un query SQL para obtener artículos sin inventario con órdenes pendientes.
+Exportación a Excel
+
+Los resultados se exportan a un archivo Excel, almacenado en la carpeta exports/.
+Envío de Correos
+
+Envía el archivo exportado a una lista de destinatarios definida en el .env.
+Limpieza de Archivos
+
+Elimina automáticamente el archivo Excel después de ser enviado.
+Logs
+
+Registra eventos importantes en archivos ubicados en la carpeta logs/.
+
+project_root/
+│
+├── main.py                     # Script principal
+├── utils/                      # Utilidades del proyecto
+│   ├── .env                    # Configuración del entorno
+│   └── log_config.py           # Configuración del logger
+├── queries/                    # Carpeta para las consultas SQL
+│   └── queries.py              # Definición de las consultas
+├── services/                   # Servicios del proyecto
+│   ├── export_service.py       # Exportación a Excel
+│   └── file_cleanup_service.py # Eliminación de archivos generados
+├── notifications/              # Servicios de notificaciones
+│   └── email_service.py        # Envío de correos electrónicos
+├── exports/                    # Carpeta donde se almacenan los archivos generados
+├── logs/                       # Carpeta donde se registran los logs
+└── requirements.txt            # Dependencias del proyecto
+

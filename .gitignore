@@ -1,0 +1,14 @@
+logs/
+exports/
+build/
+dist/
+**/*.ini
+**/*.spec
+*.log
+
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+.vscode/
