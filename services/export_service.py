@@ -55,9 +55,11 @@ def export_to_excel(data, base_file_name, export_folder='exports'):
         )
         
         # Renombrar columnas
-        df_grouped.rename(columns={"Artículo hijo": "Número de Artículo"}, inplace=True)
-        df_grouped.rename(columns={"Descripción": "Descripción del artículo"}, inplace=True)
-        df_grouped.rename(columns={"Cantidad Ordenada": "Cantidad"}, inplace=True)
+        df_grouped.rename(columns={
+            "Artículo hijo": "Número de Artículo",
+            "Descripción": "Descripción del artículo",
+            "Cantidad Ordenada": "Cantidad"
+        }, inplace=True)
 
         # Crear columnas vacías para el archivo filtrado
         df_grouped["Precio por unidad"] = ""
