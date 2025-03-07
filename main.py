@@ -113,8 +113,8 @@ try:
 
     if results or saleskit_results:
         logger.info("Query's ejecutado con exito.")
-        logger.info(f"Exportando {len(results)} registros a Excel.")
-        logger.info(f"Exportando {len(saleskit_results)} registros a Excel.")
+        logger.info(f"Exportando {len(results)} registros a Excel, del query GET_ARTICLES_NO_STOCK_PENDING_ORDERS")
+        logger.info(f"Exportando {len(saleskit_results)} registros a Excel, del query CEODO_VW_DST_ArtSinInv_SalesKit")
         export_file_path_1, filtered_file_path_1 = export_to_excel(results, base_file_name='articles_no_stock_pending_orders.xlsx')
         export_file_path_2, filtered_file_path_2 = export_to_excel(saleskit_results, base_file_name='saleskit_no_stock.xlsx')
 
