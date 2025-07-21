@@ -29,8 +29,8 @@ Asegúrate de tener instalados los siguientes componentes antes de ejecutar el p
 Clona el repositorio del proyecto desde tu fuente de control:
 
 ```bash
-git clone https://github.com/usuario/sap-inventory-report.git
-cd sap-inventory-report
+git clone https://github.com/edgarjr30/sap_inventory_stock_report.git
+cd sap_inventory_stock_report
 ```
 
 ### **2. Crear y Configurar el Archivo .env**
@@ -66,6 +66,11 @@ Para ejecutar el proyecto en modo desarrollo, utiliza el siguiente comando:
 
 ```bash
 python main.py
+```
+
+Para ejecutar en MAC
+```bash
+python3 main.py
 ```
 
 El proyecto generará un archivo Excel con los resultados del reporte y lo enviará a los destinatarios configurados en el .env.

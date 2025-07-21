@@ -44,7 +44,7 @@ load_dotenv(dotenv_path)
 # Obtener los datos de conexión desde las variables de entorno
 host = get_env_var('HOST')
 port = int(get_env_var('PORT', '30015'))  # Convertimos a entero después de validar
-user = get_env_var('USER')
+hana_user = get_env_var('HANA_USER')
 password = get_env_var('PASSWORD')
 company_db = get_env_var('COMPANY_DB')
 
@@ -77,13 +77,16 @@ if not admin_email:
     sys.exit(1)
 
 logger.info("Archivo .env cargado correctamente.")
+logger.info(f"host: {host} | port: {port} | hana_user: {hana_user} | password: {'*' * len(password)} | company_db: {company_db}")
+logger.info(f"EMAIL_FROM: {email_from} | EMAIL_PASSWORD: {'*' * len(email_password)} | SMTP_SERVER: {smtp_server}")
+print(f"Password repr: {repr(password)}")
 
 try:
     logger.info("Iniciando conexión a SAP HANA...")
     connection = dbapi.connect(
         address=host,
         port=port,
-        user=user,
+        user=hana_user,
         password=password
     )
     logger.info("Conexión exitosa a SAP HANA.")

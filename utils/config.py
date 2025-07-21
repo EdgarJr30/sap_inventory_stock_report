@@ -3,7 +3,7 @@ LOGIN_ENDPOINT = f"{API_BASE_URL}/Login"
 QUERY_ENDPOINT = f"{API_BASE_URL}/SQLQueries"
 
 AUTH_DATA = {
-    "CompanyDB": "DB_OSALM",
+    "CompanyDB": "BU_DB_OSALM_070525",
     "UserName": "Support",
     "Password": "#Ka977*"
 }
